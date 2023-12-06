@@ -1,0 +1,65 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+    
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "python": "/home/slj108/miniconda3/envs/qh/bin/python",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [ //MTL_Train.py
+                "--precision","16", // 半精度训练，即使用16为浮点数进行训练，全精度为32位
+                "--batch_size","4", // 每个batch大小
+                "--max_epochs","2", // 最大训练轮数
+                "--accelerator","ddp",
+                // "--backbone","resnet50", //即encoder使用resnet50
+                // "--encoder","ResNetBackbone", //encoder使用resnet
+                // "--decoder","CTGNN", // 解码器
+                "--gnn_head","GAT",
+                // "--gnn_layers","1",
+                // "--gnn_channels","128", 
+                // "--gnn_dropout","0.0",
+                "--gnn_residual",
+                // "--gat_num_heads","8",
+                "--adj_mat_path","./adj_all_65/adj_binary.npy",
+                // "--adj_normalization","Sym",
+                // "--class_weight","Effective", //类权重计算方式，使用其他论文的方法
+                // "--effective_beta","0.9999", // 计算类权重使用, defect_weights, water_weights
+                // "--f2CIW_weights","PosWeight",
+                "--valid_tasks","defect","water", //两个任务
+                "--task_weight","Fixed", //任务权重
+                "--task_weights_fixed","27","1", // 两个任务
+                "--use_auxilliary",
+                // "--main_weight","0.75", // 损失权重，Lt=wLt + (1-w)Lt
+                "--progress_bar_refresh_rate","10", //每500张图片刷新一次控制台进度条
+                "--flush_logs_every_n_steps","100",
+                "--log_every_n_steps","100",
+                // "--ann_root","/mnt/data0/qh/Sewer/annotations", // 标签位置
+                // "--data_root","/mnt/data0/qh/Sewer", //数据存储目录
+                "--log_save_dir","./log", //输出日志（模型）保存地址
+                "--only_defects","False" //是否只训练缺陷部分
+            ],
+            // "args": [ //iterate_results.dir.py
+            //     "--ann_root","/mnt/data0/qh/Sewer/annotations",
+            //     "--data_root","/mnt/data0/qh/Sewer",
+            //     "--results_output","./results",
+            //     "--log_input","./logs",
+            //     "--split","Valid",
+            //     "--inferce"
+            // ]
+            // "args": [ //calculate_results.py
+            //     "--output_path","./resultsMetrics",
+            //     "--split","Train",
+            //     "--score_path","./results",
+            //     "--gt_path","./annotations",
+            //     "--onlyDefect","True"
+            // ]
+        }
+    ]
+}
